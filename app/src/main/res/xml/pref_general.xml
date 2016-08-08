@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_general_group_title_discovery">
+
+        <ListPreference
+            android:key="@string/pref_key_discovery_sorttype"
+            android:summary="@string/pref_general_sorttype_summary"
+            android:title="@string/pref_general_sorttype_title"
+            android:defaultValue="@string/pref_value_sorttype_most_popular"
+            android:entries="@array/pref_discovery_sorttype"
+            android:entryValues="@array/pref_discovery_sorttype"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

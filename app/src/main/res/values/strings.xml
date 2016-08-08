@@ -1,0 +1,32 @@
+<resources>
+    <!-- Keys -->
+    <string name="moviedb_api_key">API_KEY_HERE</string>
+
+    <string name="app_name">Popular Movies</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Sort Options -->
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Settings -->
+    <string name="pref_general_group_title_discovery">Discovery</string>
+    <string name="pref_key_discovery_sorttype" translatable="false">discovery_sorttype</string>
+    <string name="pref_general_sorttype_title">Sort Type</string>
+    <string name="pref_general_sorttype_summary" formatted="false">Set default for the sort type used while retrieving movies to be discovered. Current default: %s</string>
+    <string name="pref_value_sorttype_most_popular">Most Popular</string>
+    <string name="pref_value_sorttype_highest_rated">Highest Rated</string>
+    <string name="title_activity_movie_details">Movie Details</string>
+
+    <!-- Movie Discovery -->
+    <string name="movie_discovery_uri_generation_error" formatted="false">Failed to generate url to get discovery movies. %s</string>
+    <string name="movie_discovery_retrieve_error" formatted="false">Failed to retrieve a list of movie discoveries. %s</string>
+    <string name="movie_discovery_parsing_error" formatted="false">Failed to parse a list of movies. %s</string>
+
+    <!-- Movie Details -->
+    <string name="movie_details_votes" formatted="false">Ave. Rating: %1$.2f (%2$s)</string>
+
+    <!-- Transition values-->
+    <string name="activity_griditem_discover_image_transition" translatable="false">activity_griditem_discover_image_transition</string>
+
+
+</resources>
