@@ -1,6 +1,6 @@
 <resources>
     <!-- Keys -->
-    <string name="moviedb_api_key">***REMOVED***</string>
+    <string name="moviedb_api_key">API_KEY_HERE</string>
 
     <string name="app_name">Popular Movies</string>
     <string name="action_settings">Settings</string>
