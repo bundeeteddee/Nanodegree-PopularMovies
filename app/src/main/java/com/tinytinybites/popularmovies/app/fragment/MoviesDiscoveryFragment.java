@@ -16,6 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import com.tinytinybites.popularmovies.app.R;
 import com.tinytinybites.popularmovies.app.activity.MovieDetailsActivity;
 import com.tinytinybites.popularmovies.app.adapter.DiscoveryMoviesAdapter;
@@ -33,10 +36,11 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
     protected final static String TAG = MoviesDiscoveryFragment.class.getCanonicalName();
 
     //Variables
-    private RecyclerView mDiscoveryMoviesRecyclerView;
+    @BindView(R.id.discovery_recyclerview) RecyclerView mDiscoveryMoviesRecyclerView;
+    @BindView(R.id.load_progress) ProgressBar mProgressBar;
     private DiscoveryMoviesAdapter mAdapter;
-    private ProgressBar mProgressBar;
     private RetrieveDiscoveryMovies mRetrieveTask;
+    private Unbinder mUnbinder;
 
     @Override
     public void onStart() {
@@ -81,11 +85,10 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
         //Inflate
         View view = inflater.inflate(R.layout.fragment_movies_discovery, container, false);
 
-        //Bind elements
-        mProgressBar = (ProgressBar) view.findViewById(R.id.load_progress);
+        //For element binding
+        mUnbinder = ButterKnife.bind(this, view);
 
         //Setup recycler view
-        mDiscoveryMoviesRecyclerView = (RecyclerView) view.findViewById(R.id.discovery_recyclerview);
         mDiscoveryMoviesRecyclerView.setHasFixedSize(true);
         mDiscoveryMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
@@ -96,6 +99,12 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
         mDiscoveryMoviesRecyclerView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     @Override

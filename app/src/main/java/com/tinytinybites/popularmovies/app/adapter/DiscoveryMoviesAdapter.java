@@ -54,7 +54,7 @@ public class DiscoveryMoviesAdapter extends RecyclerView.Adapter<DiscoveryMovieV
     public void onBindViewHolder(DiscoveryMovieViewHolder holder, int position) {
         //Get data for position
         Movie movie = mMovies.get(position);
-        holder.getThumbnail().setTag(movie);
+        holder.mThumbnail.setTag(movie);
 
         //Bind values to view holder
         String imageUrl = UrlUtil.GetMovieThumbnailUrl(movie, UrlUtil.ImageSize.W342);
@@ -62,9 +62,9 @@ public class DiscoveryMoviesAdapter extends RecyclerView.Adapter<DiscoveryMovieV
                 imageUrl.length() > 0) {
             Picasso.with(mContext)
                     .load(imageUrl)
-                    .into(holder.getThumbnail());
+                    .into(holder.mThumbnail);
         }
-        holder.getTitle().setText(movie.getTitle());
+        holder.mTitle.setText(movie.getTitle());
     }
 
     @Override

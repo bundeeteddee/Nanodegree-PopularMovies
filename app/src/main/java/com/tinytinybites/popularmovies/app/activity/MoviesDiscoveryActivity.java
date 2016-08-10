@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import butterknife.ButterKnife;
 import com.tinytinybites.popularmovies.app.R;
 
 public class MoviesDiscoveryActivity extends AppCompatActivity {
@@ -17,6 +18,8 @@ public class MoviesDiscoveryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movies_discovery);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ButterKnife.bind(this);
     }
 
     @Override

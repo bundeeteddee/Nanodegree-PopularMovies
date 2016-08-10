@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import com.squareup.picasso.Picasso;
 import com.tinytinybites.popularmovies.app.R;
 import com.tinytinybites.popularmovies.app.constant.IntentExtra;
@@ -23,8 +26,14 @@ public class MovieDetailsActivityFragment extends Fragment {
     //Tag
     protected static final String TAG = MovieDetailsActivityFragment.class.getCanonicalName();
 
+    //Binders
+    @BindView(R.id.release_date) TextView mReleaseTextView;
+    @BindView(R.id.total_votes) TextView mTotalVotesTextView;
+    @BindView(R.id.synopsis) TextView mSynopsisTextView;
+
     //Variables
     private Movie mMovie;
+    private Unbinder mUnbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,15 +63,24 @@ public class MovieDetailsActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
+        //Butterknife
+        mUnbinder = ButterKnife.bind(this, view);
+
         //Bind data if possible
         if(mMovie != null){
             Picasso.with(getContext()).load(UrlUtil.GetMovieThumbnailUrl(mMovie, UrlUtil.ImageSize.W342)).into(((ImageView)view.findViewById(R.id.thumbnail)));
-            ((TextView)view.findViewById(R.id.release_date)).setText(DateUtil.GetYear(mMovie.getReleaseDate()));
-            ((TextView)view.findViewById(R.id.total_votes)).setText(String.format(getString(R.string.movie_details_votes), mMovie.getVoteAverage(), mMovie.getVoteCount()));
-            ((TextView)view.findViewById(R.id.synopsis)).setText(mMovie.getOverview());
+            mReleaseTextView.setText(DateUtil.GetYear(mMovie.getReleaseDate()));
+            mTotalVotesTextView.setText(String.format(getString(R.string.movie_details_votes), mMovie.getVoteAverage(), mMovie.getVoteCount()));
+            mSynopsisTextView.setText(mMovie.getOverview());
         }
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     @Override
