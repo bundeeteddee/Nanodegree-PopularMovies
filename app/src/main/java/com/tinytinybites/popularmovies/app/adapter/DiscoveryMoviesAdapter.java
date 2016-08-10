@@ -57,7 +57,13 @@ public class DiscoveryMoviesAdapter extends RecyclerView.Adapter<DiscoveryMovieV
         holder.getThumbnail().setTag(movie);
 
         //Bind values to view holder
-        Picasso.with(mContext).load(UrlUtil.GetMovieThumbnailUrl(movie, UrlUtil.ImageSize.W342)).into(holder.getThumbnail());
+        String imageUrl = UrlUtil.GetMovieThumbnailUrl(movie, UrlUtil.ImageSize.W342);
+        if(imageUrl != null &&
+                imageUrl.length() > 0) {
+            Picasso.with(mContext)
+                    .load(imageUrl)
+                    .into(holder.getThumbnail());
+        }
         holder.getTitle().setText(movie.getTitle());
     }
 
