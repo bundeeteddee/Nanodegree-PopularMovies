@@ -9,6 +9,7 @@ If you do not have an api key, create an account at the [Movedb.org](https://www
 # Libraries Used
 * [Picasso](http://square.github.io/picasso/) for image loading
 * [Google Support Library 23+](https://developer.android.com/topic/libraries/support-library/revisions.html) for backward compatible purpose
+* [Butterknife](http://jakewharton.github.io/butterknife/) for field and method binding for Android views.
 
 
 
