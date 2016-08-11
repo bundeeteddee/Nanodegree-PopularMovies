@@ -9,8 +9,16 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
 
+    <color name="tabTitle">#FFFFFF</color>
+    <color name="tabContainerBg">@color/primary</color>
+    <color name="tabSelectedBg">@color/accent</color>
+
     <color name="movieDetailsBackground">@color/primary</color>
     <color name="movieDetailsTextPrimary">#FFFFFF</color>
     <color name="movieDetailsTextSynopsis">#757575</color>
+    <color name="movieDetailsTextHeader">#333333</color>
+    <color name="movieDetailsGeneralDivider">#333333</color>
+    <color name="movieDetailsReviewAuthorName">@color/primary_text</color>
+    <color name="movieDetailsReviewContent">@color/secondary_text</color>
 
 </resources>

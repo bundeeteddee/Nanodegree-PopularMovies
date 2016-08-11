@@ -9,20 +9,58 @@
     tools:context="com.tinytinybites.popularmovies.app.activity.MovieDetailsActivity" >
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main.collapsing"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp"
+            >
+
+            <ImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:transitionName="@string/activity_griditem_discover_image_transition"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax"/>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
+                />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/tabContainerBg"
+            app:tabIndicatorColor="@color/tabSelectedBg"
+            app:tabIndicatorHeight="5dp"
+            app:tabTextAppearance="@style/Tab.Title"
+            android:minHeight="?attr/actionBarSize"
+            app:tabMode="fixed"/>
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_movie_details"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

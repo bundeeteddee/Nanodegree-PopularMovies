@@ -27,3 +27,7 @@ local.properties
 .gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin
 .gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock
 build/intermediates/dex-cache/cache.xml
+.idea/libraries/butterknife_8_2_1.xml
+.idea/libraries/butterknife_annotations_8_2_1.xml
+.idea/libraries/gpuimage_library_1_4_1.xml
+.idea/libraries/support_annotations_24_0_0.xml

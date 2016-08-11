@@ -1,6 +1,6 @@
 <resources>
     <!-- Keys -->
-    <string name="moviedb_api_key">API_KEY_HERE</string>
+    <string name="moviedb_api_key">***REMOVED***</string>
 
     <string name="app_name">Popular Movies</string>
     <string name="action_settings">Settings</string>
@@ -24,6 +24,15 @@
 
     <!-- Movie Details -->
     <string name="movie_details_votes" formatted="false">Ave. Rating: %1$.2f (%2$s)</string>
+    <string name="movie_details_synopsis_title">Synopsis</string>
+    <string name="movie_details_reviews_title">Reviews</string>
+    <string name="movie_details_trailers_title">Trailers</string>
+    <string name="movie_reviews_uri_generation_error" formatted="false">Failed to generate url to get movie reviews. %s</string>
+    <string name="movie_reviews_retrieve_error" formatted="false">Failed to retrieve a list of movie reviews. %s</string>
+    <string name="movie_reviews_parsing_error" formatted="false">Failed to parse a list of movie reviews. %s</string>
+    <string name="movie_trailers_uri_generation_error" formatted="false">Failed to generate url to get movie trailers. %s</string>
+    <string name="movie_trailers_retrieve_error" formatted="false">Failed to retrieve a list of movie trailers. %s</string>
+    <string name="movie_trailers_parsing_error" formatted="false">Failed to parse a list of movie trailers. %s</string>
 
     <!-- Transition values-->
     <string name="activity_griditem_discover_image_transition" translatable="false">activity_griditem_discover_image_transition</string>
