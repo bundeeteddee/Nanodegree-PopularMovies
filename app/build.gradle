@@ -40,4 +40,7 @@ dependencies {
 
     //GPU for picasso transformation use
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+
+    //Stetho for debugging local db
+    compile 'com.facebook.stetho:stetho:1.1.1'
 }

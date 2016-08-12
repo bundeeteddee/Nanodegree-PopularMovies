@@ -3,6 +3,7 @@
     <string name="moviedb_api_key">your_api_key_here</string>
 
     <string name="app_name">Popular Movies</string>
+    <string name="content_authority" translatable="false">com.tinytinybites.popularmovies.app</string>
     <string name="action_settings">Settings</string>
 
     <!-- Sort Options -->
