@@ -16,6 +16,7 @@ public class ApiUtil {
     protected static final String TAG = ApiUtil.class.getCanonicalName();
 
     //Base Url
+    public static final String PUBLIC_BASE_MOVIE_URL = "https://www.themoviedb.org/movie/";
     public static final String BASE_API_URL = "http://api.themoviedb.org/3/movie/";
     public static final String BASE_YOUTUBE_URL = "https://www.youtube.com/";
 
@@ -30,8 +31,10 @@ public class ApiUtil {
 
     //Sort Type enum
     public enum SortType{
+        NONE("none"),
         MOST_POPULAR("popular"),
-        TOP_RATED("top_rated");
+        TOP_RATED("top_rated"),
+        FAVORITE("favorite");
 
         private final String mKey;
         SortType(String mKey) {
@@ -105,6 +108,14 @@ public class ApiUtil {
                 .build();
 
         return new URL(builtUri.toString());
+    }
 
+    /**
+     * Generate a movie url to moviedd.org that is public to everyone
+     * @param movideId
+     * @return
+     */
+    public static String GetPublicMovieUrl(int movideId){
+        return PUBLIC_BASE_MOVIE_URL + movideId;
     }
 }

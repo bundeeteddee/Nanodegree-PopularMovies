@@ -15,7 +15,7 @@ public class MoviesDBHelper extends SQLiteOpenHelper{
 
     //name & version
     public static final String DATABASE_NAME = "movies.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     /**
      * Constructor
@@ -34,6 +34,7 @@ public class MoviesDBHelper extends SQLiteOpenHelper{
                 MoviesContract.MovieEntry.COLUMN_SYNOPSIS + " TEXT NOT NULL, " +
                 MoviesContract.MovieEntry.COLUMN_RELEASE_DATE + " INTEGER NOT NULL, " +
                 MoviesContract.MovieEntry.COLUMN_VOTE_AVERAGE + " REAL NOT NULL, " +
+                MoviesContract.MovieEntry.COLUMN_POSTER_PATH + " TEXT NOT NULL, " +
                 MoviesContract.MovieEntry.COLUMN_VOTE_COUNT + " REAL NOT NULL" +
                 ");";
 

@@ -4,6 +4,7 @@
     <string-array name="pref_discovery_sorttype">
         <item>@string/pref_value_sorttype_most_popular</item>
         <item>@string/pref_value_sorttype_highest_rated</item>
+        <item>@string/pref_value_sorttype_favorites</item>
     </string-array>
 
 </resources>

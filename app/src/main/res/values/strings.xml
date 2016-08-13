@@ -4,7 +4,13 @@
 
     <string name="app_name">Popular Movies</string>
     <string name="content_authority" translatable="false">com.tinytinybites.popularmovies.app</string>
+
+    <!-- Menu Items -->
     <string name="action_settings">Settings</string>
+    <string name="action_share">Share</string>
+
+    <!-- Activity Titles -->
+    <string name="activity_title_discovery">Discovery</string>
 
     <!-- Sort Options -->
     <string name="title_activity_settings">Settings</string>
@@ -16,6 +22,7 @@
     <string name="pref_general_sorttype_summary" formatted="false">Set default for the sort type used while retrieving movies to be discovered. Current default: %s</string>
     <string name="pref_value_sorttype_most_popular">Most Popular</string>
     <string name="pref_value_sorttype_highest_rated">Highest Rated</string>
+    <string name="pref_value_sorttype_favorites">Favorites</string>
     <string name="title_activity_movie_details">Movie Details</string>
 
     <!-- Movie Discovery -->

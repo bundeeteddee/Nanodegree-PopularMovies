@@ -21,6 +21,7 @@
 
     <!-- Tabs -->
     <style name="Tab"/>
+
     <style name="Tab.Title">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/tabTitle</item>
@@ -28,18 +29,21 @@
 
     <!-- Movie Details -->
     <style name="MovieDetails"/>
+
     <style name="MovieDetails.ReleaseDate">
         <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/movieDetailsTextPrimary</item>
         <item name="android:padding">@dimen/movie_details_general_padding</item>
     </style>
+
     <style name="MovieDetails.TotalVotes">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">italic</item>
         <item name="android:textColor">@color/movieDetailsTextPrimary</item>
         <item name="android:padding">@dimen/movie_details_general_padding</item>
     </style>
+
     <style name="MovieDetails.Header">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/movieDetailsTextHeader</item>
@@ -47,10 +51,12 @@
         <item name="android:layout_marginTop">15dp</item>
         <item name="android:layout_marginBottom">5dp</item>
     </style>
+
     <style name="MovieDetails.Divider">
         <item name="android:layout_marginLeft">@dimen/movie_details_general_padding</item>
         <item name="android:layout_marginRight">@dimen/movie_details_general_padding</item>
     </style>
+
     <style name="MovieDetails.Synopsis">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/movieDetailsTextSynopsis</item>
@@ -58,33 +64,42 @@
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">15dp</item>
     </style>
-    <style name="MovieDetails.Review" />
+
+    <style name="MovieDetails.Review"/>
+
     <style name="MovieDetails.Review.AuthorName">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/movieDetailsReviewAuthorName</item>
     </style>
+
     <style name="MovieDetails.Review.Content">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textColor">@color/movieDetailsReviewContent</item>
     </style>
+
     <style name="MovieDetails.Review.None">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/movieDetailsReviewContent</item>
         <item name="android:padding">20dp</item>
     </style>
-    <style name="MovieDetails.Trailer" />
+
+    <style name="MovieDetails.Trailer"/>
+
     <style name="MovieDetails.Trailer.Name">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/primary_text</item>
     </style>
+
     <style name="MovieDetails.Trailer.Site">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textColor">@color/secondary_text</item>
     </style>
+
     <style name="MovieDetails.Trailer.Type">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textColor">@color/secondary_text</item>
     </style>
+
     <style name="MovieDetails.Trailer.None">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/secondary_text</item>

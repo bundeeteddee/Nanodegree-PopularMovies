@@ -49,6 +49,32 @@ public class Movie implements Parcelable{
     private int mVoteCount;
 
     /**
+     * Minimal constructor to reconstruct a movie from sql lite
+     * @param id
+     * @param title
+     * @param synopsis
+     * @param releaseDate
+     * @param voteAverage
+     * @param totlaCount
+     * @param posterPath
+     */
+    public Movie(int id,
+                 String title,
+                 String synopsis,
+                 long releaseDate,
+                 double voteAverage,
+                 int totlaCount,
+                 String posterPath){
+        mId = id;
+        mTitle = title;
+        mOverview = synopsis;
+        mReleaseDate = new Date(releaseDate);
+        mVoteAverage = voteAverage;
+        mVoteCount = totlaCount;
+        mPosterPath = posterPath;
+    }
+
+    /**
      * Constructor given json Object
      * @param movieJsonObject
      */

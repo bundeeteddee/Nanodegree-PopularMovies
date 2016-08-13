@@ -2,10 +2,15 @@ package com.tinytinybites.popularmovies.app.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,8 +27,11 @@ import butterknife.Unbinder;
 import com.tinytinybites.popularmovies.app.R;
 import com.tinytinybites.popularmovies.app.activity.MovieDetailsActivity;
 import com.tinytinybites.popularmovies.app.adapter.DiscoveryMoviesAdapter;
+import com.tinytinybites.popularmovies.app.adapter.FavoritedMoviesAdapter;
 import com.tinytinybites.popularmovies.app.application.EApplication;
 import com.tinytinybites.popularmovies.app.constant.IntentExtra;
+import com.tinytinybites.popularmovies.app.data.LoaderType;
+import com.tinytinybites.popularmovies.app.data.MoviesContract;
 import com.tinytinybites.popularmovies.app.http.ApiUtil;
 import com.tinytinybites.popularmovies.app.model.Movie;
 import com.tinytinybites.popularmovies.app.task.RetrieveDiscoveryMovies;
@@ -31,7 +39,10 @@ import com.tinytinybites.popularmovies.app.task.RetrieveDiscoveryMovies;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMoviesAdapter.MovieClicked, RetrieveDiscoveryMovies.FetchDiscoveryResponse {
+public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMoviesAdapter.MovieClicked,
+                                                            RetrieveDiscoveryMovies.FetchDiscoveryResponse,
+                                                            FavoritedMoviesAdapter.MovieClicked,
+                                                            LoaderManager.LoaderCallbacks<Cursor>{
     //Tag
     protected final static String TAG = MoviesDiscoveryFragment.class.getCanonicalName();
 
@@ -39,8 +50,10 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
     @BindView(R.id.discovery_recyclerview) RecyclerView mDiscoveryMoviesRecyclerView;
     @BindView(R.id.load_progress) ProgressBar mProgressBar;
     private DiscoveryMoviesAdapter mAdapter;
+    private FavoritedMoviesAdapter mFavoriteCursorAdapter;
     private RetrieveDiscoveryMovies mRetrieveTask;
     private Unbinder mUnbinder;
+    private ApiUtil.SortType mCurrentSortType = ApiUtil.SortType.NONE;
 
     @Override
     public void onStart() {
@@ -51,8 +64,10 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
         String selectedDefault = preferences.getString(getString(R.string.pref_key_discovery_sorttype), getString(R.string.pref_value_sorttype_most_popular));
         if(selectedDefault.equalsIgnoreCase(getString(R.string.pref_value_sorttype_most_popular))) {
             retrieveMovies(ApiUtil.SortType.MOST_POPULAR);
-        }else{
+        }else if(selectedDefault.equalsIgnoreCase(getString(R.string.pref_value_sorttype_highest_rated))) {
             retrieveMovies(ApiUtil.SortType.TOP_RATED);
+        }else if(selectedDefault.equalsIgnoreCase(getString(R.string.pref_value_sorttype_favorites))){
+            retrieveMovies(ApiUtil.SortType.FAVORITE);
         }
     }
 
@@ -61,22 +76,64 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
      * @param sortType
      */
     private void retrieveMovies(ApiUtil.SortType sortType){
-        if(mRetrieveTask != null){
-            //Check that is its not null and its running, that it is the right sort type
-            if(mRetrieveTask.getStatus() == AsyncTask.Status.RUNNING){
-                if(mRetrieveTask.getSortType() == sortType){
-                    //Its still running and its the same sort type we want. Let it keep going
-                    return;
-                }else{
-                    //Its a different type. Cancel this
-                    mRetrieveTask.cancel(true);
+        switch (sortType){
+            case MOST_POPULAR:
+            case TOP_RATED:{
+                //We do not want to keep setting adapter to recycler view as it will reset positioning of items
+                //So we check availibility of adapter and check the type it is
+                if(mDiscoveryMoviesRecyclerView.getAdapter() == null ||
+                        !(mDiscoveryMoviesRecyclerView.getAdapter() instanceof DiscoveryMoviesAdapter)){
+                    mDiscoveryMoviesRecyclerView.setAdapter(mAdapter);
                 }
+
+                if(mCurrentSortType.equals(sortType)){
+                    //Do nothing more.
+                    return;
+                }
+
+                mCurrentSortType = sortType;
+                setToolbarTitle();
+                if(mRetrieveTask != null){
+                    //Check that is its not null and its running, that it is the right sort type
+                    if(mRetrieveTask.getStatus() == AsyncTask.Status.RUNNING){
+                        if(mRetrieveTask.getSortType() == sortType){
+                            //Its still running and its the same sort type we want. Let it keep going
+                            return;
+                        }else{
+                            //Its a different type. Cancel this
+                            mRetrieveTask.cancel(true);
+                        }
+                    }
+                }
+
+                //Create new task and run
+                mRetrieveTask = new RetrieveDiscoveryMovies(this, sortType);
+                mRetrieveTask.execute();
+                break;
+            }
+            case FAVORITE:{
+                //We do not want to keep setting adapter to recycler view as it will reset positioning of items
+                //So we check availibility of adapter and check the type it is
+                if(mDiscoveryMoviesRecyclerView.getAdapter() == null ||
+                        !(mDiscoveryMoviesRecyclerView.getAdapter() instanceof FavoritedMoviesAdapter)){
+                    mDiscoveryMoviesRecyclerView.setAdapter(mFavoriteCursorAdapter);
+                }
+
+                if(mCurrentSortType.equals(sortType)){
+                    //Do nothing more
+                    return;
+                }
+
+                //Restart loader
+                mCurrentSortType = sortType;
+                setToolbarTitle();
+                getActivity().getSupportLoaderManager().restartLoader(LoaderType.FAVORITE_MOVIE_LOADER, null, this);
+
+                return;
             }
         }
 
-        //Create new task and run
-        mRetrieveTask = new RetrieveDiscoveryMovies(this, sortType);
-        mRetrieveTask.execute();
+
     }
 
     @Override
@@ -92,11 +149,11 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
         mDiscoveryMoviesRecyclerView.setHasFixedSize(true);
         mDiscoveryMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
-        //Setup adapter
+        //Setup adapters. One for cursor the other normal
         mAdapter = new DiscoveryMoviesAdapter(EApplication.getInstance(), this);
+        mFavoriteCursorAdapter = new FavoritedMoviesAdapter(EApplication.getInstance(), this, null);
 
-        //Bind adapter
-        mDiscoveryMoviesRecyclerView.setAdapter(mAdapter);
+        //Bind adapters only when needed
 
         return view;
     }
@@ -113,6 +170,30 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra(IntentExtra.MOVIE, movie);
         startActivity(intent);
+    }
+
+    /**
+     * Set title of the toolbar
+     */
+    private void setToolbarTitle(){
+        switch(mCurrentSortType){
+            case MOST_POPULAR:{
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.pref_value_sorttype_most_popular);
+                break;
+            }
+            case TOP_RATED:{
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.pref_value_sorttype_highest_rated);
+                break;
+            }
+            case FAVORITE:{
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.pref_value_sorttype_favorites);
+                break;
+            }
+            default:
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.activity_title_discovery);
+                break;
+        }
+
     }
 
     private void showProgressBar(){ mProgressBar.setVisibility(View.VISIBLE);}
@@ -155,5 +236,26 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
                 }
             });
         }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getActivity(),
+                MoviesContract.MovieEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mFavoriteCursorAdapter.swapCursor(data);
+        hideProgressBar();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mFavoriteCursorAdapter.swapCursor(null);
     }
 }

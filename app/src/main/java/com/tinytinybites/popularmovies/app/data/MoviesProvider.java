@@ -159,6 +159,9 @@ public class MoviesProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
+        if(numDeleted > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
         return numDeleted;
     }
 
