@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +40,6 @@ public class DiscoveryMoviesAdapter extends RecyclerView.Adapter<DiscoveryMovieV
     @Override
     public DiscoveryMovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.griditem_discover_movie, parent, false);
-
-        //Give it a rough height of half the recyclerview
-        int height = parent.getMeasuredHeight() / 2;
-        RecyclerView.LayoutParams lm = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, height);
-        view.setLayoutParams(lm);
 
         return new DiscoveryMovieViewHolder(view, mListener);
     }
@@ -84,6 +78,6 @@ public class DiscoveryMoviesAdapter extends RecyclerView.Adapter<DiscoveryMovieV
     }
 
     public interface MovieClicked{
-        void onMovieSelected(Movie movie, ImageView view);
+        void onMovieSelected(Movie movie);
     }
 }

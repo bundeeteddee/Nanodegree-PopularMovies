@@ -21,6 +21,7 @@ public class DiscoveryMovieViewHolder extends RecyclerView.ViewHolder{
     //Variables
     @BindView(R.id.title) public TextView mTitle;
     @BindView(R.id.thumbnail) public ImageView mThumbnail;
+    @BindView(R.id.cardview) public View mRoot;
     private DiscoveryMoviesAdapter.MovieClicked mListener;
 
     public DiscoveryMovieViewHolder(View itemView, DiscoveryMoviesAdapter.MovieClicked listener) {
@@ -34,7 +35,8 @@ public class DiscoveryMovieViewHolder extends RecyclerView.ViewHolder{
     @OnClick(R.id.thumbnail)
     public void thumbnailClicked(View v) {
         if(mListener != null){
-            mListener.onMovieSelected((Movie) v.getTag(), (ImageView) v);
+            mListener.onMovieSelected((Movie) v.getTag());
         }
     }
+
 }

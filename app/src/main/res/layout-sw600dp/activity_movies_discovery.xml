@@ -22,11 +22,33 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <fragment android:id="@+id/fragment_movie_discovery"
-              android:name="com.tinytinybites.popularmovies.app.fragment.MoviesDiscoveryFragment"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              app:layout_behavior="@string/appbar_scrolling_view_behavior"
-              tools:layout="@layout/fragment_movies_discovery"/>
+    <!-- Layout for multipane -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@color/movieDetailsBackground">
+
+        <fragment
+            android:id="@+id/fragment_movie_discovery"
+            android:name="com.tinytinybites.popularmovies.app.fragment.MoviesDiscoveryFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            tools:layout="@layout/fragment_movies_discovery"
+            />
+
+        <FrameLayout
+            android:id="@+id/movie_details_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@color/movieDetailsBackground"/>
+
+    </LinearLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>

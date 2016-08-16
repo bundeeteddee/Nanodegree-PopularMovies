@@ -49,7 +49,12 @@ public class MovieReviewsFragment extends Fragment implements RetrieveMovieRevie
      */
     public static MovieReviewsFragment newInstance(Movie movie){
         MovieReviewsFragment fragment = new MovieReviewsFragment();
-        fragment.setMovie(movie);
+
+        //Supply arguments
+        Bundle args = new Bundle();
+        args.putParcelable(IntentExtra.MOVIE, movie);
+        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -57,7 +62,10 @@ public class MovieReviewsFragment extends Fragment implements RetrieveMovieRevie
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null ||
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mMovie = arguments.getParcelable(IntentExtra.MOVIE);
+        }else if(savedInstanceState == null ||
                 !savedInstanceState.containsKey(IntentExtra.MOVIE)) {
             //nothing from saved instance, attempt to get it from intent bundle
             Bundle extras = getActivity().getIntent().getExtras();
@@ -158,7 +166,7 @@ public class MovieReviewsFragment extends Fragment implements RetrieveMovieRevie
 
     @Override
     public void OnFetchReviewResponse(ArrayList<MovieReview> reviews) {
-        if(reviews != null){
+        if(reviews != null && !isDetached()){
             mAdapter.addAll(reviews);
 
             if(reviews.isEmpty()){

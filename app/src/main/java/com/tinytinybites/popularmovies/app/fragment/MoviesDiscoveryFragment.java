@@ -1,10 +1,10 @@
 package com.tinytinybites.popularmovies.app.fragment;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -16,7 +16,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -25,11 +24,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.tinytinybites.popularmovies.app.R;
-import com.tinytinybites.popularmovies.app.activity.MovieDetailsActivity;
 import com.tinytinybites.popularmovies.app.adapter.DiscoveryMoviesAdapter;
 import com.tinytinybites.popularmovies.app.adapter.FavoritedMoviesAdapter;
 import com.tinytinybites.popularmovies.app.application.EApplication;
-import com.tinytinybites.popularmovies.app.constant.IntentExtra;
 import com.tinytinybites.popularmovies.app.data.LoaderType;
 import com.tinytinybites.popularmovies.app.data.MoviesContract;
 import com.tinytinybites.popularmovies.app.http.ApiUtil;
@@ -106,6 +103,9 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
                     }
                 }
 
+                //Ensure loader has been killed off
+                getActivity().getSupportLoaderManager().destroyLoader(LoaderType.FAVORITE_MOVIE_LOADER);
+
                 //Create new task and run
                 mRetrieveTask = new RetrieveDiscoveryMovies(this, sortType);
                 mRetrieveTask.execute();
@@ -153,8 +153,6 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
         mAdapter = new DiscoveryMoviesAdapter(EApplication.getInstance(), this);
         mFavoriteCursorAdapter = new FavoritedMoviesAdapter(EApplication.getInstance(), this, null);
 
-        //Bind adapters only when needed
-
         return view;
     }
 
@@ -165,11 +163,8 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
     }
 
     @Override
-    public void onMovieSelected(Movie movie, ImageView view) {
-        //Fire an explicit intent to movie details
-        Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-        intent.putExtra(IntentExtra.MOVIE, movie);
-        startActivity(intent);
+    public void onMovieSelected(Movie movie) {
+        ((Callback)getActivity()).onItemSelected(movie);
     }
 
     /**
@@ -203,8 +198,11 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
     public void OnFetchDiscoveryResponse(ArrayList<Movie> movies) {
         if(movies != null){
             mAdapter.addAll(movies);
-        }
 
+            if(!movies.isEmpty()) {
+                ((Callback)getActivity()).onPreselectMovie(movies.get(0));
+            }
+        }
         hideProgressBar();
     }
 
@@ -250,12 +248,37 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        //Listen to changes in the content
+        data.setNotificationUri(getActivity().getContentResolver(), MoviesContract.MovieEntry.CONTENT_URI);
+
         mFavoriteCursorAdapter.swapCursor(data);
+
+        (new Handler()).post(new Runnable() {
+            @Override
+            public void run() {
+                if(mFavoriteCursorAdapter.getItemCount() > 0){
+                    ((Callback)getActivity()).onPreselectMovie(mFavoriteCursorAdapter.getItem(0));
+                }
+            }
+        });
+
+
         hideProgressBar();
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mFavoriteCursorAdapter.swapCursor(null);
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     * Gist coming from: https://gist.github.com/udacityandroid/41f9e52a36e88388624d
+     */
+    public interface Callback {
+        void onItemSelected(Movie movie);
+        void onPreselectMovie(Movie movie);
     }
 }

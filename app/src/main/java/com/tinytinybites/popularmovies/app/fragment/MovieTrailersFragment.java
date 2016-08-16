@@ -55,7 +55,12 @@ public class MovieTrailersFragment extends Fragment implements RetrieveMovieTrai
      */
     public static MovieTrailersFragment newInstance(Movie movie){
         MovieTrailersFragment fragment = new MovieTrailersFragment();
-        fragment.setMovie(movie);
+
+        //Supply arguments
+        Bundle args = new Bundle();
+        args.putParcelable(IntentExtra.MOVIE, movie);
+        fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -99,7 +104,10 @@ public class MovieTrailersFragment extends Fragment implements RetrieveMovieTrai
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null ||
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mMovie = arguments.getParcelable(IntentExtra.MOVIE);
+        }else if(savedInstanceState == null ||
                 !savedInstanceState.containsKey(IntentExtra.MOVIE)) {
             //nothing from saved instance, attempt to get it from intent bundle
             Bundle extras = getActivity().getIntent().getExtras();

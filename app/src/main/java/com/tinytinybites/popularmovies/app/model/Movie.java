@@ -1,5 +1,6 @@
 package com.tinytinybites.popularmovies.app.model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,6 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import com.tinytinybites.popularmovies.app.data.MoviesContract;
 import com.tinytinybites.popularmovies.app.util.DateUtil;
 
 /**
@@ -72,6 +74,20 @@ public class Movie implements Parcelable{
         mVoteAverage = voteAverage;
         mVoteCount = totlaCount;
         mPosterPath = posterPath;
+    }
+
+    /**
+     * Constructor when given a cursor
+     * @param cursor
+     */
+    public Movie(Cursor cursor){
+        mId = cursor.getInt(cursor.getColumnIndexOrThrow(MoviesContract.MovieEntry._ID));
+        mTitle = cursor.getString(cursor.getColumnIndexOrThrow(MoviesContract.MovieEntry.COLUMN_TITLE));
+        mOverview = cursor.getString(cursor.getColumnIndexOrThrow(MoviesContract.MovieEntry.COLUMN_SYNOPSIS));
+        mReleaseDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(MoviesContract.MovieEntry.COLUMN_RELEASE_DATE)));
+        mVoteAverage = cursor.getDouble(cursor.getColumnIndexOrThrow(MoviesContract.MovieEntry.COLUMN_VOTE_AVERAGE));
+        mVoteCount = cursor.getInt(cursor.getColumnIndexOrThrow(MoviesContract.MovieEntry.COLUMN_VOTE_COUNT));
+        mPosterPath = cursor.getString(cursor.getColumnIndexOrThrow(MoviesContract.MovieEntry.COLUMN_POSTER_PATH));
     }
 
     /**
