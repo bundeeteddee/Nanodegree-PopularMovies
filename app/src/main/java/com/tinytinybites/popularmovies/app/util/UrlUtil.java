@@ -9,6 +9,12 @@ public final class UrlUtil {
     //Statics
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
 
+    // Suppress default constructor for noninstantiability
+    // Note: http://stackoverflow.com/a/25658502/377844
+    private UrlUtil() {
+        throw new AssertionError();
+    }
+
     //Size Enum: value coming from :
     //https://docs.google.com/document/d/1ZlN1fUsCSKuInLECcJkslIqvpKlP7jWL2TP9m6UiA6I/pub?embedded=true
     public enum ImageSize{
