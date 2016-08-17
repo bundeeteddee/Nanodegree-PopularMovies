@@ -29,6 +29,7 @@
     <string name="movie_discovery_uri_generation_error" formatted="false">Failed to generate url to get discovery movies. %s</string>
     <string name="movie_discovery_retrieve_error" formatted="false">Failed to retrieve a list of movie discoveries. %s</string>
     <string name="movie_discovery_parsing_error" formatted="false">Failed to parse a list of movies. %s</string>
+    <string name="movie_discovery_no_data">There are no data to show.</string>
 
     <!-- Movie Details -->
     <string name="movie_details_votes" formatted="false">Ave. Rating: %1$.2f (%2$s)</string>

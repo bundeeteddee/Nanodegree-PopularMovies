@@ -10,6 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <TextView
+        style="@style/MovieDiscovery.GeneralText"
+        android:id="@+id/general_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/movie_discovery_no_data" />
+
     <ProgressBar
         style="@android:style/Widget.Holo.Light.ProgressBar.Large.Inverse"
         android:id="@+id/load_progress"

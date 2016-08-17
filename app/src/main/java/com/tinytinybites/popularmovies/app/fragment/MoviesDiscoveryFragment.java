@@ -17,7 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import butterknife.BindView;
@@ -46,6 +46,7 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
     //Variables
     @BindView(R.id.discovery_recyclerview) RecyclerView mDiscoveryMoviesRecyclerView;
     @BindView(R.id.load_progress) ProgressBar mProgressBar;
+    @BindView(R.id.general_message) TextView mGeneralText;
     private DiscoveryMoviesAdapter mAdapter;
     private FavoritedMoviesAdapter mFavoriteCursorAdapter;
     private DiscoveryMoviesTask mRetrieveTask;
@@ -196,14 +197,21 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
 
     @Override
     public void OnFetchDiscoveryResponse(ArrayList<Movie> movies) {
+        hideProgressBar();
+
         if(movies != null){
             mAdapter.addAll(movies);
 
             if(!movies.isEmpty()) {
+                hideEmptyMessage();
+
                 ((Callback)getActivity()).onPreselectMovie(movies.get(0));
+            }else{
+                showEmptyMessage();
             }
+        }else{
+            showEmptyMessage();
         }
-        hideProgressBar();
     }
 
     @Override
@@ -212,28 +220,12 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
         mAdapter.clearAll();
 
         showProgressBar();
+        hideEmptyMessage();
     }
 
     @Override
     public void OnFetchDiscoveryError(String error) {
         showError(error);
-    }
-
-    /**
-     * Convenient function to show a toast for error messages
-     * @param errorMessage
-     */
-    private void showError(final String errorMessage){
-        //Ensure toast is running on ui thread
-        if(getActivity() != null &&
-                !getActivity().isFinishing()){
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(EApplication.getInstance(), errorMessage, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
     }
 
     @Override
@@ -262,6 +254,11 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
             }
         });
 
+        if(data.getCount() == 0){
+            showEmptyMessage();
+        }else{
+            hideEmptyMessage();
+        }
 
         hideProgressBar();
     }
@@ -269,6 +266,20 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mFavoriteCursorAdapter.swapCursor(null);
+    }
+
+    private void showError(final String errorMessage){
+        mGeneralText.setVisibility(View.VISIBLE);
+        mGeneralText.setText(errorMessage);
+    }
+
+    private void showEmptyMessage(){
+        mGeneralText.setVisibility(View.VISIBLE);
+        mGeneralText.setText(getString(R.string.movie_discovery_no_data));
+    }
+
+    private void hideEmptyMessage(){
+        mGeneralText.setVisibility(View.GONE);
     }
 
     /**

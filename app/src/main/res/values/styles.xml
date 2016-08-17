@@ -28,6 +28,16 @@
     </style>
 
     <!-- Movie Details -->
+    <style name="MovieDiscovery"/>
+
+    <style name="MovieDiscovery.GeneralText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/movieDiscoveryGeneralText</item>
+        <item name="android:padding">15dp</item>
+    </style>
+
+    <!-- Movie Details -->
     <style name="MovieDetails"/>
 
     <style name="MovieDetails.ReleaseDate">

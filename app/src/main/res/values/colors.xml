@@ -23,5 +23,7 @@
     <color name="movieDetailsReviewAuthorName">@color/primary_text</color>
     <color name="movieDetailsReviewContent">@color/secondary_text</color>
 
+    <color name="movieDiscoveryGeneralText">#FFFFFF</color>
+
 
 </resources>

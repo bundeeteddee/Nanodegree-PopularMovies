@@ -3,10 +3,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+
+
     <!-- Discovery Layout -->
     <dimen name="discovery_griditem_padding">5dp</dimen>
     <dimen name="discovery_griditem_elevation">5dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
 
     <!-- Movie Details -->
     <dimen name="movie_details_general_padding">10dp</dimen>
