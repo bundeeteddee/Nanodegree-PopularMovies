@@ -5,7 +5,7 @@ import com.tinytinybites.popularmovies.app.model.Movie;
 /**
  * Created by bundee on 8/4/16.
  */
-public class UrlUtil {
+public final class UrlUtil {
     //Statics
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
 
