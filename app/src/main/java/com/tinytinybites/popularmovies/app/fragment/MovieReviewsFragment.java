@@ -22,13 +22,13 @@ import com.tinytinybites.popularmovies.app.application.EApplication;
 import com.tinytinybites.popularmovies.app.constant.IntentExtra;
 import com.tinytinybites.popularmovies.app.model.Movie;
 import com.tinytinybites.popularmovies.app.model.MovieReview;
-import com.tinytinybites.popularmovies.app.task.RetrieveMovieReviews;
+import com.tinytinybites.popularmovies.app.task.MovieReviewsTask;
 
 
 /**
  * Created by bundee on 8/11/16.
  */
-public class MovieReviewsFragment extends Fragment implements RetrieveMovieReviews.FetchReviewsResponse {
+public class MovieReviewsFragment extends Fragment implements MovieReviewsTask.FetchReviewsResponse {
     //Tag
     protected static final String TAG = MovieReviewsFragment.class.getCanonicalName();
 
@@ -36,7 +36,7 @@ public class MovieReviewsFragment extends Fragment implements RetrieveMovieRevie
     private Movie mMovie;
     private Unbinder mUnbinder;
     private MovieReviewsAdapter mAdapter;
-    private RetrieveMovieReviews mRetrieveTask;
+    private MovieReviewsTask mRetrieveTask;
 
     //Bindings
     @BindView(R.id.general_message) TextView mGeneralMessage;
@@ -152,7 +152,7 @@ public class MovieReviewsFragment extends Fragment implements RetrieveMovieRevie
         }
 
         //Create new task and run
-        mRetrieveTask = new RetrieveMovieReviews(this, mMovie.getId());
+        mRetrieveTask = new MovieReviewsTask(this, mMovie.getId());
         mRetrieveTask.execute();
     }
 

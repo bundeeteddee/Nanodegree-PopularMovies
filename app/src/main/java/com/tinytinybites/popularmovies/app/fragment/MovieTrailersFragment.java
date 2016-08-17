@@ -28,13 +28,13 @@ import com.tinytinybites.popularmovies.app.constant.IntentExtra;
 import com.tinytinybites.popularmovies.app.http.ApiUtil;
 import com.tinytinybites.popularmovies.app.model.Movie;
 import com.tinytinybites.popularmovies.app.model.MovieTrailer;
-import com.tinytinybites.popularmovies.app.task.RetrieveMovieTrailers;
+import com.tinytinybites.popularmovies.app.task.MovieTrailersTask;
 
 
 /**
  * Created by bundee on 8/11/16.
  */
-public class MovieTrailersFragment extends Fragment implements RetrieveMovieTrailers.FetchTrailersResponse, MovieTrailersAdapter.TrailerClicked {
+public class MovieTrailersFragment extends Fragment implements MovieTrailersTask.FetchTrailersResponse, MovieTrailersAdapter.TrailerClicked {
     //Tag
     protected static final String TAG = MovieTrailersFragment.class.getCanonicalName();
 
@@ -42,7 +42,7 @@ public class MovieTrailersFragment extends Fragment implements RetrieveMovieTrai
     private Movie mMovie;
     private Unbinder mUnbinder;
     private MovieTrailersAdapter mAdapter;
-    private RetrieveMovieTrailers mRetrieveTask;
+    private MovieTrailersTask mRetrieveTask;
 
     //Bindings
     @BindView(R.id.general_message) TextView mGeneralMessage;
@@ -149,7 +149,7 @@ public class MovieTrailersFragment extends Fragment implements RetrieveMovieTrai
         }
 
         //Create new task and run
-        mRetrieveTask = new RetrieveMovieTrailers(this, mMovie.getId());
+        mRetrieveTask = new MovieTrailersTask(this, mMovie.getId());
         mRetrieveTask.execute();
     }
 

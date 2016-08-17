@@ -31,13 +31,13 @@ import com.tinytinybites.popularmovies.app.data.LoaderType;
 import com.tinytinybites.popularmovies.app.data.MoviesContract;
 import com.tinytinybites.popularmovies.app.http.ApiUtil;
 import com.tinytinybites.popularmovies.app.model.Movie;
-import com.tinytinybites.popularmovies.app.task.RetrieveDiscoveryMovies;
+import com.tinytinybites.popularmovies.app.task.DiscoveryMoviesTask;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMoviesAdapter.MovieClicked,
-                                                            RetrieveDiscoveryMovies.FetchDiscoveryResponse,
+                                                            DiscoveryMoviesTask.FetchDiscoveryResponse,
                                                             FavoritedMoviesAdapter.MovieClicked,
                                                             LoaderManager.LoaderCallbacks<Cursor>{
     //Tag
@@ -48,7 +48,7 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
     @BindView(R.id.load_progress) ProgressBar mProgressBar;
     private DiscoveryMoviesAdapter mAdapter;
     private FavoritedMoviesAdapter mFavoriteCursorAdapter;
-    private RetrieveDiscoveryMovies mRetrieveTask;
+    private DiscoveryMoviesTask mRetrieveTask;
     private Unbinder mUnbinder;
     private ApiUtil.SortType mCurrentSortType = ApiUtil.SortType.NONE;
 
@@ -107,7 +107,7 @@ public class MoviesDiscoveryFragment extends Fragment implements DiscoveryMovies
                 getActivity().getSupportLoaderManager().destroyLoader(LoaderType.FAVORITE_MOVIE_LOADER);
 
                 //Create new task and run
-                mRetrieveTask = new RetrieveDiscoveryMovies(this, sortType);
+                mRetrieveTask = new DiscoveryMoviesTask(this, sortType);
                 mRetrieveTask.execute();
                 break;
             }

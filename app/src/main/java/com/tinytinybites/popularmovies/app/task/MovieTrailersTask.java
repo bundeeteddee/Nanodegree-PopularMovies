@@ -21,25 +21,25 @@ import java.util.ArrayList;
 import com.tinytinybites.popularmovies.app.R;
 import com.tinytinybites.popularmovies.app.application.EApplication;
 import com.tinytinybites.popularmovies.app.http.ApiUtil;
-import com.tinytinybites.popularmovies.app.model.MovieReview;
+import com.tinytinybites.popularmovies.app.model.MovieTrailer;
 
 /**
- * Asynctask that retrieves movie reviews
+ * Asynctask that retrieves movie trailers
  */
-public class RetrieveMovieReviews extends AsyncTask<Void, Void, ArrayList<MovieReview>> {
-    protected static final String TAG = RetrieveMovieReviews.class.getCanonicalName();
+public class MovieTrailersTask extends AsyncTask<Void, Void, ArrayList<MovieTrailer>> {
+    protected static final String TAG = MovieTrailersTask.class.getCanonicalName();
 
     //Variables
     private int mMovieId;
-    private WeakReference<FetchReviewsResponse> mDelegate;
+    private WeakReference<FetchTrailersResponse> mDelegate;
 
     /**
      * Constructor
      * @param delegate
      * @param movieId
      */
-    public RetrieveMovieReviews(FetchReviewsResponse delegate,
-                                int movieId) {
+    public MovieTrailersTask(FetchTrailersResponse delegate,
+                             int movieId) {
         this.mDelegate = new WeakReference<>(delegate);
         this.mMovieId = movieId;
     }
@@ -51,12 +51,12 @@ public class RetrieveMovieReviews extends AsyncTask<Void, Void, ArrayList<MovieR
     @Override
     protected void onPreExecute() {
         if(mDelegate.get() != null){
-            mDelegate.get().OnFetchReviewsProgress();
+            mDelegate.get().OnFetchTrailersProgress();
         }
     }
 
     @Override
-    protected ArrayList<MovieReview> doInBackground(Void... params) {
+    protected ArrayList<MovieTrailer> doInBackground(Void... params) {
         // Note: Code from gist: https://gist.github.com/anonymous/1c04bf2423579e9d2dcd
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -64,14 +64,14 @@ public class RetrieveMovieReviews extends AsyncTask<Void, Void, ArrayList<MovieR
         BufferedReader reader = null;
 
         // Will contain the raw JSON response as a string.
-        String movieReviewsJsonStr = null;
+        String movieTrailersJsonStr = null;
         URL url = null;
         try{
-            url = ApiUtil.GetMovieReviewsURL(mMovieId);
+            url = ApiUtil.GetMovieTrailersURL(mMovieId);
         } catch (MalformedURLException e) {
             //Failed to Generate URL
             if(mDelegate.get() != null){
-                mDelegate.get().OnFetchReviewError(String.format(EApplication.getInstance().getString(R.string.movie_reviews_uri_generation_error), e.getMessage()));
+                mDelegate.get().OnFetchTrailersError(String.format(EApplication.getInstance().getString(R.string.movie_trailers_uri_generation_error), e.getMessage()));
             }
             return null;
         }
@@ -87,7 +87,7 @@ public class RetrieveMovieReviews extends AsyncTask<Void, Void, ArrayList<MovieR
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
                 // Nothing to do.
-                movieReviewsJsonStr = null;
+                movieTrailersJsonStr = null;
             }
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -101,14 +101,14 @@ public class RetrieveMovieReviews extends AsyncTask<Void, Void, ArrayList<MovieR
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
-                movieReviewsJsonStr = null;
+                movieTrailersJsonStr = null;
             }
-            movieReviewsJsonStr = buffer.toString();
+            movieTrailersJsonStr = buffer.toString();
         } catch (IOException e) {
             // If the code didn't successfully get the movies data, there's no point in attempting
             // to parse it. Show error
             if(mDelegate.get() != null){
-                mDelegate.get().OnFetchReviewError(String.format(EApplication.getInstance().getString(R.string.movie_reviews_retrieve_error), e.getMessage()));
+                mDelegate.get().OnFetchTrailersError(String.format(EApplication.getInstance().getString(R.string.movie_trailers_retrieve_error), e.getMessage()));
             }
             return null;
         } finally{
@@ -123,35 +123,35 @@ public class RetrieveMovieReviews extends AsyncTask<Void, Void, ArrayList<MovieR
         }
 
         //Parse json to get a list of movie review objects
-        ArrayList<MovieReview> reviews = new ArrayList<>();
+        ArrayList<MovieTrailer> trailers = new ArrayList<>();
         try {
-            JSONObject returnResults = new JSONObject(movieReviewsJsonStr);
+            JSONObject returnResults = new JSONObject(movieTrailersJsonStr);
 
             //Get results array
             JSONArray resultsArray = returnResults.getJSONArray("results");
             for(int i = 0; i < resultsArray.length(); i++){
-                reviews.add(new MovieReview(resultsArray.getJSONObject(i)));
+                trailers.add(new MovieTrailer(resultsArray.getJSONObject(i)));
             }
         } catch (JSONException e) {
             if(mDelegate.get() != null){
-                mDelegate.get().OnFetchReviewError(String.format(EApplication.getInstance().getString(R.string.movie_reviews_parsing_error), e.getMessage()));
+                mDelegate.get().OnFetchTrailersError(String.format(EApplication.getInstance().getString(R.string.movie_trailers_parsing_error), e.getMessage()));
             }
             return null;
         }
 
-        return reviews;
+        return trailers;
     }
 
     @Override
-    protected void onPostExecute(ArrayList<MovieReview> reviews) {
+    protected void onPostExecute(ArrayList<MovieTrailer> trailers) {
         if(mDelegate.get() != null){
-            mDelegate.get().OnFetchReviewResponse(reviews);
+            mDelegate.get().OnFetchTrailersResponse(trailers);
         }
     }
 
-    public interface FetchReviewsResponse{
-        void OnFetchReviewsProgress();
-        void OnFetchReviewResponse(ArrayList<MovieReview> reviews);
-        void OnFetchReviewError(String error);
+    public interface FetchTrailersResponse{
+        void OnFetchTrailersProgress();
+        void OnFetchTrailersResponse(ArrayList<MovieTrailer> trailers);
+        void OnFetchTrailersError(String error);
     }
 }

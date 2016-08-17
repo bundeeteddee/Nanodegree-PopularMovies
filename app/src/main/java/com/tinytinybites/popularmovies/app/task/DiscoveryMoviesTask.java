@@ -26,8 +26,8 @@ import com.tinytinybites.popularmovies.app.model.Movie;
 /**
  * Asynctask that retrieves movies for discovery
  */
-public class RetrieveDiscoveryMovies extends AsyncTask<Void, Void, ArrayList<Movie>> {
-    protected static final String TAG = RetrieveDiscoveryMovies.class.getCanonicalName();
+public class DiscoveryMoviesTask extends AsyncTask<Void, Void, ArrayList<Movie>> {
+    protected static final String TAG = DiscoveryMoviesTask.class.getCanonicalName();
 
     //Variables
     private ApiUtil.SortType mSortType;
@@ -38,8 +38,8 @@ public class RetrieveDiscoveryMovies extends AsyncTask<Void, Void, ArrayList<Mov
      * @param delegate
      * @param sortType
      */
-    public RetrieveDiscoveryMovies(FetchDiscoveryResponse delegate,
-                                   ApiUtil.SortType sortType) {
+    public DiscoveryMoviesTask(FetchDiscoveryResponse delegate,
+                               ApiUtil.SortType sortType) {
         this.mDelegate = new WeakReference<>(delegate);
         this.mSortType = sortType;
     }
